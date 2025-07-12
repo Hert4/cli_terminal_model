@@ -1,3 +1,6 @@
+import os
+
+PATH = os.path.dirname(os.path.abspath(__file__))
 SYSTEM_PROMPT = """\
 You are a helpful assistant. As an agent, you must follow these rules:
 
@@ -76,14 +79,37 @@ You are provided with function signatures within <tools></tools> XML tags:
   {
     "type": "function",
     "function": {
-      "name": "update_file",
+      "name": "adjust_file",
       "description": "Cập nhật file trên máy tính cục bộ. **Lưu ý**: Cần đọc file trước khi cập nhật.",
       "parameters": {
         "type": "object",
         "properties": {
           "content": {
             "type": "string",
-            "description": "Nội dung muốn cập nhật"
+            "description": "Nội dung muốn cập nhật thêm vào file"
+          },
+          "file_path": {
+            "type": "string",
+            "description": "Thư mục của file muốn cập nhật, mặc định là thư mục hiện tại",
+            "default": "./"
+          }
+        },
+        "required": ["content", "file_path"] 
+      }
+    }
+  },
+
+  {
+    "type": "function",
+    "function": {
+      "name": "write_file",
+      "description": "Viết file trên máy tính cục bộ. **Lưu ý**: Cần đọc file trước khi cập nhật.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Nội dung viết lại cho file"
           },
           "file_path": {
             "type": "string",
@@ -135,4 +161,11 @@ For each function call, return a json object with function name and arguments wi
 
 <tool_call>
 {'name': <function-name>, 'arguments': <args-json-object>}
-</tool_call>"""
+</tool_call>
+
+### Memory:
+// Need to notes some important need to memorize when making conversation with USER'S
+// You should always update memory when making conversations with user because MEMORY is really imporant
+Memory style store like thism each memory can be updated memory need to store in the array below with JSON style
+This is important and can be updated in this files. Read it before updated. 
+"""

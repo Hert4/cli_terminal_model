@@ -2,9 +2,12 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from tools.tools import read_file
 
 load_dotenv()
 from prompt.system_prompt_api import SYSTEM_PROMPT
+
+PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class Models:
@@ -21,7 +24,13 @@ class Models:
 
     def generate_response(self, user_input):
         messages = (
-            [{"role": "system", "content": SYSTEM_PROMPT}]
+            [
+                {
+                    "role": "system",
+                    "content": SYSTEM_PROMPT
+                    + f"\n{read_file(PATH + '/prompt/memory.md')}",
+                }
+            ]
             + self.history[-4:]
             + [{"role": "user", "content": user_input}]
         )

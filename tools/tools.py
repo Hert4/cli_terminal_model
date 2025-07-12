@@ -101,11 +101,16 @@ def search_file(file_name, search_path="."):
     return found_files
 
 
-def update_file(file_path, content):
-    #
+def adjust_file(file_path, content):
     with open(file_path, "a", encoding="utf-8") as file:
         file.write(content)
     return "File updated successfully."
+
+
+def write_file(file_path, content):
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(content)
+    return "File write successfully."
 
 
 ##### Terminal and run python code ####

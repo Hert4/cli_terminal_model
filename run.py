@@ -11,7 +11,8 @@ function_map = {
     "get_search": get_search,
     "read_file": read_file,
     "search_file": search_file,
-    "update_file": update_file,
+    "adjust_file": adjust_file,
+    "write_file": write_file,
     "run_python_code": run_python_code,
     "run_terminal": run_terminal,
 }
@@ -23,7 +24,7 @@ def handle_function_call(func_name: str, args: dict) -> str:
         if func:
             return func(**args)
         else:
-            return f"Hàm {func_name} không được hỗ trợ"
+            return f"Opps! Hàm {func_name} không được hỗ trợ"
     except Exception as e:
         return f"ERROR: {str(e)}"
 
@@ -85,11 +86,10 @@ def chat_api():
 
 
 if __name__ == "__main__":
-    # select_model = input("SELECT model (choose 'qwen' or 'deepseek'):")
-    # if select_model.strip() == "qwen":
-    #     chat()
-    # elif select_model.strip() == "deepseek":
-    #     chat_api()
-    # else:
-    #     print("Good byes")
-    chat_api()
+    select_model = input("SELECT model (choose 'qwen' or 'deepseek'):")
+    if select_model.strip() == "qwen":
+        chat()
+    elif select_model.strip() == "deepseek":
+        chat_api()
+    else:
+        print("Good byes")
