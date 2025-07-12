@@ -11,10 +11,10 @@ class Models:
     def __init__(self):
         self.api = "https://openrouter.ai/api/v1/chat/completions"
         self.api_key = [
-            os.getenv("OPENROUTER_API_KEY"),
-            os.getenv("OPENROUTER_API_KEY_1"),
-            os.getenv("OPENROUTER_API_KEY_2"),
-            os.getenv("OPENROUTER_API_KEY_3"),
+            os.getenv("API_KEY"),
+            os.getenv("API_KEY_1"),
+            os.getenv("API_KEY_2"),
+            os.getenv("API_KEY_3"),
         ]
         self.history = []
 
@@ -110,5 +110,5 @@ class Models:
                 print(f"Exception occurred: {e}")
                 continue
 
-        print("All API keys exhausted or failed.")
+        print("All API keys exhausted comback tomorrow... Maybe.")
         return None
