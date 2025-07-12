@@ -14,7 +14,10 @@ device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 
 class QwenChatbot:
-    def __init__(self, model_name=os.getenv("MODEL_NAME")):
+    def __init__(
+        self,
+        model_name=os.path.join(PATH, "models", os.getenv("MODEL_NAME")),
+    ):
         self.tokenizer = AutoTokenizer.from_pretrained(
             model_name, local_files_only=True
         )
