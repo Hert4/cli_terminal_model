@@ -3,7 +3,9 @@ from prompt.prompt import TOOLS
 import os
 import threading
 import torch
+from dotenv import load_dotenv
 
+load_dotenv()
 PATH = os.path.dirname(os.path.abspath(__file__))
 from tools.tools import read_file
 
@@ -12,10 +14,7 @@ device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 
 class QwenChatbot:
-    def __init__(
-        self,
-        model_name=os.path.join(PATH, "models", "Qwen3-0.6B"),
-    ):
+    def __init__(self, model_name=os.getenv("MODEL_NAME")):
         self.tokenizer = AutoTokenizer.from_pretrained(
             model_name, local_files_only=True
         )
