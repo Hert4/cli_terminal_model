@@ -53,7 +53,7 @@ def chat():
                 print(f"LỖI HỆ THỐNG: {str(e)}")
                 break
 
-        print(f"Assistant: {response}\n")
+        print(f"\033[31mAssistant: {response}\033[0m\n")
 
 
 def chat_api():
@@ -81,14 +81,15 @@ def chat_api():
                 print(f"LỖI HỆ THỐNG: {str(e)}")
                 break
 
-        print(f"Assistant: {response}\n")
+        print(f"\033[31mAssistant: {response}\033[0m\n")
 
 
 if __name__ == "__main__":
-    select_model = input("SELECT model (choose 'qwen' or 'deepseek'):")
-    if select_model.strip() == "qwen":
-        chat()
-    elif select_model.strip() == "deepseek":
-        chat_api()
-    else:
-        print("Good byes")
+    # select_model = input("SELECT model (choose 'qwen' or 'deepseek'):")
+    # if select_model.strip() == "qwen":
+    #     chat()
+    # elif select_model.strip() == "deepseek":
+    #     chat_api()
+    # else:
+    #     print("Good byes")
+    chat_api()

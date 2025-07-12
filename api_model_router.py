@@ -2,14 +2,15 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from prompt.system_prompt_api import SYSTEM_PROMPT
 
 load_dotenv()
+from prompt.system_prompt_api import SYSTEM_PROMPT
 
 
 class Models:
     def __init__(self):
         self.api = "https://openrouter.ai/api/v1/chat/completions"
+
         self.api_key = [
             os.getenv("API_KEY"),
             os.getenv("API_KEY_1"),
@@ -28,11 +29,6 @@ class Models:
         payload = {
             "model": "deepseek/deepseek-r1-0528:free",
             "messages": messages,
-            "stream": True,
-            "reasoning": {
-                "effort": "high",
-                "max_tokens": 2048,
-            },
         }
 
         for key in self.api_key:
@@ -43,72 +39,34 @@ class Models:
             }
 
             try:
-                with requests.post(
-                    self.api, headers=headers, json=payload, stream=True
-                ) as r:
-                    r.encoding = "utf-8"
-                    if r.status_code == 200:
+                response = requests.post(
+                    self.api, headers=headers, data=json.dumps(payload)
+                )
 
-                        print("Assistant: ", end="", flush=True)
-                        full_response = ""
-                        reasoning = ""
-                        buffer = ""
+                if response.status_code == 200:
+                    response_data = response.json()
+                    message = response_data.get("choices", [{}])[0].get("message", {})
 
-                        for chunk in r.iter_content(
-                            chunk_size=1024, decode_unicode=True
-                        ):
-                            buffer += chunk
-                            while True:
-                                line_end = buffer.find("\n")
-                                if line_end == -1:
-                                    break
+                    assistant_reply = message.get("content", "")
+                    reasoning = f'<think>\n{message.get("reasoning", "")}\n</think>\n'
 
-                                line = buffer[:line_end].strip()
-                                buffer = buffer[line_end + 1 :]
+                    self.history.append({"role": "user", "content": user_input})
+                    self.history.append(
+                        {"role": "assistant", "content": assistant_reply}
+                    )
+                    return reasoning + assistant_reply
 
-                                if line.startswith("data: "):
-                                    data = line[6:]
-                                    if data == "[DONE]":
-                                        print()
-                                        self.history.append(
-                                            {"role": "user", "content": user_input}
-                                        )
-                                        self.history.append(
-                                            {
-                                                "role": "assistant",
-                                                "content": full_response,
-                                            }
-                                        )
-                                        return f"<think>\n{reasoning}\n</think>\n{full_response}"
+                elif response.status_code == 429:
+                    print(f"Rate limit hit with key: {key}, trying next...")
+                    continue  # thử key kế tiếp
 
-                                    try:
-                                        data_obj = json.loads(data)
-                                        delta = data_obj["choices"][0]["delta"]
-
-                                        # Capture reasoning safely
-                                        if "reasoning" in delta:
-                                            reasoning += delta["reasoning"] or ""
-
-                                        # Capture content
-                                        content = delta.get("content")
-                                        if content:
-                                            print(content, end="", flush=True)
-                                            full_response += content
-
-                                    except json.JSONDecodeError:
-                                        pass
-
-                    elif r.status_code == 429:
-                        print("Opps! Some issues occus you might want to restart!")
-                        print("If restart does not help? Please comeback tomorrow")
-                        continue
-                    else:
-                        print(f"Error: {r.status_code}, {r.text}")
-                        return None
+                else:
+                    print(f"Error: {response.status_code}, {response.text}")
+                    return None
 
             except Exception as e:
                 print(f"Exception occurred: {e}")
-                continue
+                return None
 
-        print("All API keys exhausted comback tomorrow... Maybe.")
+        print("All API keys exhausted or failed.")
         return None
