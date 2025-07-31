@@ -77,15 +77,18 @@ def scrape_webpage(url: str):
         for tag in soup(["script", "style", "header", "footer"]):
             tag.decompose()
 
-        return soup.get_text(separator=" ", strip=True)[:5000] + "..."
+        return soup.get_text(separator="\n", strip=True)[:10000] + "..."
     except Exception as e:
         return f"Lỗi: {str(e)}"
 
 
 def read_file(file_path: str):
-    with open(file_path, "r", encoding="utf-8") as file:
-        finally_content = file.read()
-    return finally_content
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            finally_content = file.read()
+        return finally_content
+    except Exception as e:
+        return "Opps can not read this file:\n{e}"
 
 
 ##### File tools #####
@@ -139,3 +142,25 @@ def run_python_code(code: str):
         return local_vars.get("output")
     except Exception as e:
         return f"Lỗi khi chạy mã: {str(e)}"
+
+
+## Memory:
+def update_memory(content: str):
+    with open(
+        "C:\\Users\\ADMIN\\OneDrive\\Máy tính\\cli\\prompt\\memory.md",
+        "a",
+        encoding="utf-8",
+    ) as file:
+        file.write(content)
+
+    return "Memory success full"
+
+
+# def read_memory(content: str):
+#     with open(
+#         "C:\\Users\\ADMIN\\OneDrive\\Máy tính\\cli\\prompt\\memory.md",
+#         "r",
+#         encoding="utf-8",
+#     ) as file:
+#         memory = file.read()
+#         return memory

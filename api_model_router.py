@@ -36,7 +36,7 @@ class Models:
         )
 
         payload = {
-            "model": "deepseek/deepseek-r1-0528:free",
+            "model": "tngtech/deepseek-r1t2-chimera:free",
             "messages": messages,
         }
 
@@ -63,7 +63,7 @@ class Models:
                     self.history.append(
                         {"role": "assistant", "content": assistant_reply}
                     )
-                    return reasoning + assistant_reply
+                    return reasoning, assistant_reply
 
                 elif response.status_code == 429:
                     print(f"Rate limit hit with key: {key}, trying next...")
@@ -71,11 +71,11 @@ class Models:
 
                 else:
                     print(f"Error: {response.status_code}, {response.text}")
-                    return None
+                    return None, None
 
             except Exception as e:
                 print(f"Exception occurred: {e}")
-                return None
+                return None, None
 
         print("All API keys exhausted or failed.")
         return None

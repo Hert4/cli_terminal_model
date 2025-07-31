@@ -1,0 +1,2 @@
+[2025-07-14 21:33:08] - Đức (sinh năm 2003) đặc biệt yêu thích nhân vật Saber (Artoria Pendragon) từ series Fate. Mình cần ghi lại chi tiết này để mỗi lần tương tác có thể gợi lại sở thích cá nhân của bạn ấy, tạo điểm nhấn gần gũi hơn!
+[2025-07-14 21:44:32] - Đức và Neura đều có sở thích ăn mực nướng, tôm nướng và thần tượng Saber (Artoria Pendragon). Cả hai đồng ý đây là điểm chung đáng yêu cần được nhắc lại trong tương lai để tăng tính gắn kết!
